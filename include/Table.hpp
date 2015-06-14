@@ -42,20 +42,32 @@ class Table {
   }
 
   // Concrete methods
-  ForkPtr fork(unsigned int id) {
-    return _forks.at(id);
-  }
-
-  PhilosopherPtr philosopher(unsigned int id) {
-    return _philosophers.at(id);
-  }
-
-  unsigned int number_forks() {
+  unsigned int number_forks() const {
     return _forks.size();
   }
 
-  unsigned int number_philosophers() {
+  ForkPtr fork(unsigned int fork_id) {
+    return _forks.at(fork_id);
+  }
+
+  ForkPtr left_fork(unsigned int philosopher_id) {
+    return _forks.at(philosopher_id);
+  }
+
+  ForkPtr right_fork(unsigned int philosopher_id) {
+    return _forks.at((philosopher_id + 1) % number_forks());
+  }
+
+  PhilosopherPtr philosopher(unsigned int philosopher_id) {
+    return _philosophers.at(philosopher_id);
+  }
+
+  unsigned int number_philosophers() const {
     return _philosophers.size();
+  }
+
+  const std::vector<PhilosopherPtr> &philosophers() const {
+    return _philosophers;
   }
 
  private:
@@ -66,10 +78,11 @@ class Table {
   // Constructors
   Table() = default;
 
-  Table(const std::vector<unsigned int> weights)
-      : _forks(weights.size()+1) {
-    for (unsigned int id = 0; id < weights.size(); id++)
+  Table(const std::vector<unsigned int> weights) {
+    for (unsigned int id = 0; id < weights.size(); id++) {
+      _forks.emplace_back(Fork::make(id));
       _philosophers.emplace_back(Philosopher::make(weights[id], id));
+    }
   }
 };
 
