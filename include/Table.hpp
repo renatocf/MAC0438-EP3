@@ -46,24 +46,24 @@ class Table {
     return _forks.size();
   }
 
-  ForkPtr fork(unsigned int fork_id) {
-    return _forks.at(fork_id);
+  ForkPtr fork(unsigned int fork_place) {
+    return _forks.at(fork_place);
   }
 
-  ForkPtr left_fork(unsigned int philosopher_id) {
-    return _forks.at(philosopher_id);
+  ForkPtr left_fork(unsigned int philosopher_place) {
+    return _forks.at(philosopher_place);
   }
 
-  ForkPtr right_fork(unsigned int philosopher_id) {
-    return _forks.at((philosopher_id + 1) % number_forks());
-  }
-
-  PhilosopherPtr philosopher(unsigned int philosopher_id) {
-    return _philosophers.at(philosopher_id);
+  ForkPtr right_fork(unsigned int philosopher_place) {
+    return _forks.at((philosopher_place + 1) % number_forks());
   }
 
   unsigned int number_philosophers() const {
     return _philosophers.size();
+  }
+
+  PhilosopherPtr philosopher(unsigned int philosopher_place) {
+    return _philosophers.at(philosopher_place);
   }
 
   const std::vector<PhilosopherPtr> &philosophers() const {

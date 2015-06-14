@@ -46,9 +46,9 @@ TEST_F(ATable, hasRightNumberOfPhilosophers) {
 }
 
 TEST_F(ATable, hasInitializedAllPhilosophers) {
-  for (unsigned int id = 0; id < weights.size(); id++) {
-    ASSERT_EQ(table->philosopher(id)->id(), id);
-    ASSERT_EQ(table->philosopher(id)->weight(), weights[id]);
+  for (unsigned int place = 0; place < weights.size(); place++) {
+    ASSERT_EQ(table->philosopher(place)->place(), place);
+    ASSERT_EQ(table->philosopher(place)->weight(), weights[place]);
   }
 }
 
@@ -57,15 +57,15 @@ TEST_F(ATable, hasRightNumberOfForks) {
 }
 
 TEST_F(ATable, hasInitializedAllForks) {
-  for (unsigned int id = 0; id < weights.size(); id++) {
-    ASSERT_EQ(table->fork(id)->id(), id);
+  for (unsigned int place = 0; place < weights.size(); place++) {
+    ASSERT_EQ(table->fork(place)->place(), place);
   }
 }
 
 TEST_F(ATable, hasForksInTheRightPosition) {
   for (const auto philosopher : table->philosophers()) {
-    auto id = philosopher->id();
-    ASSERT_EQ(table->left_fork(id)->id(), id);
-    ASSERT_EQ(table->right_fork(id)->id(), (id+1) % table->number_forks());
+    auto place = philosopher->place();
+    ASSERT_EQ(table->left_fork(place)->place(), place);
+    ASSERT_EQ(table->right_fork(place)->place(), (place+1) % table->number_forks());
   }
 }

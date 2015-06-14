@@ -58,9 +58,9 @@ class Philosopher {
 
   // Concrete methods
   void think() {
-    std::mt19937_64 eng{std::random_device{}()};
-    std::uniform_int_distribution<> dist(1, 10);
-    std::this_thread::sleep_for(std::chrono::seconds{dist(eng)});
+    std::mt19937_64 eng{_seed};
+    std::uniform_int_distribution<> dist(10, 100);
+    std::this_thread::sleep_for(std::chrono::milliseconds{dist(eng)});
   }
 
   void eat() {
@@ -79,8 +79,12 @@ class Philosopher {
     return _weight;
   }
 
-  unsigned int id() {
-    return _id;
+  void place(unsigned int place) {
+    _place = place;
+  }
+
+  unsigned int place() {
+    return _place;
   }
 
  private:
@@ -99,8 +103,8 @@ class Philosopher {
     RightHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override {
-      philosopher->table()->right_fork(philosopher->id());
-      philosopher->table()->left_fork(philosopher->id());
+      philosopher->table()->right_fork(philosopher->place());
+      philosopher->table()->left_fork(philosopher->place());
     }
     ~RightHanded() override {}
   };
@@ -112,23 +116,25 @@ class Philosopher {
     LeftHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override {
-      philosopher->table()->left_fork(philosopher->id());
-      philosopher->table()->right_fork(philosopher->id());
+      philosopher->table()->left_fork(philosopher->place());
+      philosopher->table()->right_fork(philosopher->place());
     }
     ~LeftHanded() override {}
   };
 
   // Instance variables
-  unsigned int _id;
   unsigned int _weight;
+  unsigned int _place;
+  unsigned int _seed;
   std::shared_ptr<Philosopher::Behavior> _behavior;
   TablePtr _table;
 
   // Constructors
-  Philosopher(unsigned int weight, unsigned int id,
+  Philosopher(unsigned int weight, unsigned int place,
               Philosopher::hand_preference preference
-                = Philosopher::hand_preference::right_handed)
-      : _weight(weight), _id(id) {
+                = Philosopher::hand_preference::right_handed,
+              unsigned int seed = std::random_device{}())
+      : _weight(weight), _place(place), _seed(seed) {
 
     switch (preference) {
       case hand_preference::right_handed:

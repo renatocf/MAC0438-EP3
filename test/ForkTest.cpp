@@ -34,7 +34,7 @@ struct AFork : public testing::Test {
 };
 
 TEST_F(AFork, hasCorrectId) {
-  ASSERT_EQ(fork->id(), 0);
+  ASSERT_EQ(fork->place(), 0);
 }
 
 TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {
@@ -42,12 +42,12 @@ TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {
   std::vector<unsigned int> result { 0, 1, 2, 3, 4 };
 
   std::vector<std::thread> threads;
-  for (unsigned int id = 0; id < 5; id++) {
-    threads.emplace_back([this, id, &arrive]() {
+  for (unsigned int place = 0; place < 5; place++) {
+    threads.emplace_back([this, place, &arrive]() {
       fork->take();
       // Sleep to avoid races just after finishing
-      std::this_thread::sleep_for(std::chrono::milliseconds(id * 2));
-      arrive.push_back(id);
+      std::this_thread::sleep_for(std::chrono::milliseconds(place * 2));
+      arrive.push_back(place);
       fork->drop();
     });
   }

@@ -55,13 +55,17 @@ class Fork {
   }
 
   // Concrete methods
-  unsigned int id() const {
-    return _id;
+  unsigned int place() const {
+    return _place;
+  }
+
+  void place(unsigned int place) {
+    _place = place;
   }
 
  private:
   // Instance variables
-  unsigned int _id;
+  unsigned int _place;
 
   // Monitor variables
   std::mutex _mutex;
@@ -69,7 +73,7 @@ class Fork {
   std::condition_variable not_using;
 
   // Constructors
-  Fork(unsigned int id) : _id(id) {
+  Fork(unsigned int place) : _place(place) {
   }
 
   // Monitor methods

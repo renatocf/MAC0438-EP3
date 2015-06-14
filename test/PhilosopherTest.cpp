@@ -30,12 +30,17 @@ class APhilosopher : public testing::Test {
   PhilosopherPtr philosopher = Philosopher::make(80, 0);
 };
 
+class ADinningPhilosopher : public testing::Test {
+ protected:
+  TablePtr table = Table::make(std::vector<unsigned int>{80});
+};
+
 TEST_F(APhilosopher, hasCorrectWeight) {
   ASSERT_EQ(philosopher->weight(), 80);
 }
 
 TEST_F(APhilosopher, hasCorrectId) {
-  ASSERT_EQ(philosopher->id(), 0);
+  ASSERT_EQ(philosopher->place(), 0);
 }
 
 TEST_F(APhilosopher, canHaveTableAssigned) {
