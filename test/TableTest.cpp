@@ -28,28 +28,28 @@
 #include "Table.hpp"
 
 struct ATable : public testing::Test {
-  std::vector<PhilosopherPtr> philosophers {
-    Philosopher::make(65,  0), // Descartes
-    Philosopher::make(70,  1), // Plato
-    Philosopher::make(75,  2), // Voltaire
-    Philosopher::make(85,  3), // Confucius
-    Philosopher::make(100, 4)  // Socrates
+  std::vector<unsigned int> weights {
+    65, // Descartes
+    70, // Plato
+    75, // Voltaire
+    85, // Confucius
+    100 // Socrates
   };
 
-  TablePtr table = Table::make(std::vector<PhilosopherPtr>(philosophers));
+  TablePtr table = Table::make(weights);
 };
 
 TEST_F(ATable, hasRightNumberOfPhilosophers) {
-  ASSERT_EQ(table->number_philosophers(), philosophers.size());
+  ASSERT_EQ(table->number_philosophers(), weights.size());
 }
 
 TEST_F(ATable, hasInitializedAllPhilosophers) {
-  for (unsigned int id = 0; id < philosophers.size(); id++) {
-    ASSERT_EQ(table->philosopher(id)->id(), philosophers[id]->id());
-    ASSERT_EQ(table->philosopher(id)->weight(), philosophers[id]->weight());
+  for (unsigned int id = 0; id < weights.size(); id++) {
+    ASSERT_EQ(table->philosopher(id)->id(), id);
+    ASSERT_EQ(table->philosopher(id)->weight(), weights[id]);
   }
 }
 
 TEST_F(ATable, hasRightNumberOfForks) {
-  ASSERT_EQ(table->number_forks(), philosophers.size()+1);
+  ASSERT_EQ(table->number_forks(), weights.size()+1);
 }

@@ -66,9 +66,10 @@ class Table {
   // Constructors
   Table() = default;
 
-  Table(std::vector<PhilosopherPtr> &&philosophers)
-      : _philosophers(std::move(philosophers)),
-        _forks(_philosophers.size()+1) {
+  Table(const std::vector<unsigned int> weights)
+      : _forks(weights.size()+1) {
+    for (unsigned int id = 0; id < weights.size(); id++)
+      _philosophers.emplace_back(Philosopher::make(weights[id], id));
   }
 };
 
