@@ -29,11 +29,11 @@
 
 struct ATable : public testing::Test {
   std::vector<PhilosopherPtr> philosophers {
-    Philosopher::make(65), // Descartes
-    Philosopher::make(70), // Plato
-    Philosopher::make(75), // Voltaire
-    Philosopher::make(85), // Confucius
-    Philosopher::make(100) // Socrates
+    Philosopher::make(65,  0), // Descartes
+    Philosopher::make(70,  1), // Plato
+    Philosopher::make(75,  2), // Voltaire
+    Philosopher::make(85,  3), // Confucius
+    Philosopher::make(100, 4)  // Socrates
   };
 
   TablePtr table = Table::make(std::vector<PhilosopherPtr>(philosophers));
@@ -45,6 +45,7 @@ TEST_F(ATable, hasRightNumberOfPhilosophers) {
 
 TEST_F(ATable, hasInitializedAllPhilosophers) {
   for (unsigned int id = 0; id < philosophers.size(); id++) {
+    ASSERT_EQ(table->philosopher(id)->id(), philosophers[id]->id());
     ASSERT_EQ(table->philosopher(id)->weight(), philosophers[id]->weight());
   }
 }

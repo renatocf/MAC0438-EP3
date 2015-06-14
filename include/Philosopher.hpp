@@ -33,9 +33,6 @@ using PhilosopherPtr = std::shared_ptr<Philosopher>;
 // Class
 class Philosopher {
  public:
-  // Alias
-  using Weight = unsigned int;
-
   // Static methods
   template<typename... Args>
   static PhilosopherPtr make(Args... args) {
@@ -51,18 +48,23 @@ class Philosopher {
     return _table;
   }
 
-  Weight weight() {
+  unsigned int weight() {
     return _weight;
+  }
+
+  unsigned int id() {
+    return _id;
   }
 
  private:
   // Instance variables
-  Weight _weight;
+  unsigned int _id;
+  unsigned int _weight;
   TablePtr _table;
 
   // Constructors
-  Philosopher(Weight weight)
-      : _weight(weight), _table(nullptr) {
+  Philosopher(unsigned int weight, unsigned int id)
+      : _weight(weight), _id(id) {
   }
 };
 
