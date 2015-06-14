@@ -28,27 +28,27 @@
 #include "Table.hpp"
 
 struct ATable : public testing::Test {
-  std::vector<Philosopher> philosophers {
-    Philosopher(65), // Descartes
-    Philosopher(70), // Plato
-    Philosopher(75), // Voltaire
-    Philosopher(85), // Confucius
-    Philosopher(100) // Socrates
+  std::vector<PhilosopherPtr> philosophers {
+    Philosopher::make(65), // Descartes
+    Philosopher::make(70), // Plato
+    Philosopher::make(75), // Voltaire
+    Philosopher::make(85), // Confucius
+    Philosopher::make(100) // Socrates
   };
 
-  Table table{std::vector<Philosopher>(philosophers)};
+  TablePtr table = Table::make(std::vector<PhilosopherPtr>(philosophers));
 };
 
 TEST_F(ATable, hasRightNumberOfPhilosophers) {
-  ASSERT_EQ(table.number_philosophers(), philosophers.size());
+  ASSERT_EQ(table->number_philosophers(), philosophers.size());
 }
 
 TEST_F(ATable, hasInitializedAllPhilosophers) {
   for (unsigned int id = 0; id < philosophers.size(); id++) {
-    ASSERT_EQ(table.philosopher(id).weight(), philosophers[id].weight());
+    ASSERT_EQ(table->philosopher(id)->weight(), philosophers[id]->weight());
   }
 }
 
 TEST_F(ATable, hasRightNumberOfForks) {
-  ASSERT_EQ(table.number_forks(), philosophers.size()+1);
+  ASSERT_EQ(table->number_forks(), philosophers.size()+1);
 }

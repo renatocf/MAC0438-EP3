@@ -17,7 +17,27 @@
 #ifndef HPP_FORK_DEFINED
 #define HPP_FORK_DEFINED
 
+// Standard headers
+#include <mutex>
+#include <memory>
+#include <iostream>
+
+// Internal headers
+#include "Philosopher.hpp"
+
+// Forward declaration
+class Fork;
+
+// Pointer
+using ForkPtr = std::shared_ptr<Fork>;
+
+// Class
 class Fork {
+ public:
+  template<typename... Args>
+  static ForkPtr make(Args... args) {
+    return TablePtr(new Fork(std::forward<Args>(args)...));
+  }
 };
 
 #endif

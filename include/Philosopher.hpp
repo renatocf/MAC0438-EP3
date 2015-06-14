@@ -17,25 +17,37 @@
 #ifndef HPP_PHILOSOPHER_DEFINED
 #define HPP_PHILOSOPHER_DEFINED
 
-// Forward declaration
-class Table;
+// Standard headers
+#include <memory>
 
+// Cyclic dependency
+class Table;
+using TablePtr = std::shared_ptr<Table>;
+
+// Forward declaration
+class Philosopher;
+
+// Pointer
+using PhilosopherPtr = std::shared_ptr<Philosopher>;
+
+// Class
 class Philosopher {
  public:
   // Alias
   using Weight = unsigned int;
 
-  // Constructors
-  Philosopher(Weight weight)
-      : _weight(weight), _table(nullptr) {
+  // Static methods
+  template<typename... Args>
+  static PhilosopherPtr make(Args... args) {
+    return PhilosopherPtr(new Philosopher(std::forward<Args>(args)...));
   }
 
   // Concrete methods
-  void table(Table *table) {
+  void table(TablePtr table) {
     _table = table;
   }
 
-  Table *table() {
+  TablePtr table() {
     return _table;
   }
 
@@ -46,7 +58,12 @@ class Philosopher {
  private:
   // Instance variables
   Weight _weight;
-  Table *_table;
+  TablePtr _table;
+
+  // Constructors
+  Philosopher(Weight weight)
+      : _weight(weight), _table(nullptr) {
+  }
 };
 
 #endif

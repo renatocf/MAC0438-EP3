@@ -18,29 +18,35 @@
 #define HPP_TABLE_DEFINED
 
 // Standard headers
-#include <vector>
+#include <memory>
 #include <thread>
+#include <vector>
 
 // Internal headers
 #include "Fork.hpp"
 #include "Philosopher.hpp"
 
+// Forward declaration
+class Table;
+
+// Pointer
+using TablePtr = std::shared_ptr<Table>;
+
+// Class
 class Table {
  public:
-  // Constructors
-  Table() = default;
-
-  Table(std::vector<Philosopher> &&philosophers)
-      : _philosophers(std::move(philosophers)),
-        _forks(_philosophers.size()+1) {
+  // Static methods
+  template<typename... Args>
+  static TablePtr make(Args... args) {
+    return TablePtr(new Table(std::forward<Args>(args)...));
   }
 
   // Concrete methods
-  Fork &fork(unsigned int id) {
+  ForkPtr fork(unsigned int id) {
     return _forks.at(id);
   }
 
-  Philosopher &philosopher(unsigned int id) {
+  PhilosopherPtr philosopher(unsigned int id) {
     return _philosophers.at(id);
   }
 
@@ -54,8 +60,16 @@ class Table {
 
  private:
   // Instance variables
-  std::vector<Philosopher> _philosophers;
-  std::vector<Fork> _forks;
+  std::vector<PhilosopherPtr> _philosophers;
+  std::vector<ForkPtr> _forks;
+
+  // Constructors
+  Table() = default;
+
+  Table(std::vector<PhilosopherPtr> &&philosophers)
+      : _philosophers(std::move(philosophers)),
+        _forks(_philosophers.size()+1) {
+  }
 };
 
 #endif

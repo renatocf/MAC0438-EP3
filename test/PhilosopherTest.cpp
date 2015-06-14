@@ -26,15 +26,15 @@
 
 class APhilosopher : public testing::Test {
  protected:
-  Table empty_table;
-  Philosopher philosopher{80};
+  TablePtr empty_table = Table::make();
+  PhilosopherPtr philosopher = Philosopher::make(80);
 };
 
 TEST_F(APhilosopher, hasWeight80Kg) {
-  ASSERT_EQ(philosopher.weight(), 80);
+  ASSERT_EQ(philosopher->weight(), 80);
 }
 
 TEST_F(APhilosopher, canHaveTableAssigned) {
-  philosopher.table(&empty_table);
-  ASSERT_EQ(philosopher.table(), &empty_table);
+  philosopher->table(empty_table);
+  ASSERT_EQ(philosopher->table(), empty_table);
 }
