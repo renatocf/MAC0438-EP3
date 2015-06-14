@@ -22,15 +22,15 @@
 #include <thread>
 #include <vector>
 
-// Internal headers
-#include "Fork.hpp"
-#include "Philosopher.hpp"
-
 // Forward declaration
+class Fork;
 class Table;
+class Philosopher;
 
 // Pointer
+using ForkPtr = std::shared_ptr<Fork>;
 using TablePtr = std::shared_ptr<Table>;
+using PhilosopherPtr = std::shared_ptr<Philosopher>;
 
 // Class
 class Table {
@@ -78,12 +78,7 @@ class Table {
   // Constructors
   Table() = default;
 
-  Table(const std::vector<unsigned int> weights) {
-    for (unsigned int id = 0; id < weights.size(); id++) {
-      _forks.emplace_back(Fork::make(id));
-      _philosophers.emplace_back(Philosopher::make(weights[id], id));
-    }
-  }
+  Table(const std::vector<unsigned int> weights);
 };
 
 #endif

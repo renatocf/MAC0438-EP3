@@ -14,7 +14,15 @@
 /*  limitations under the License.                                            */
 /******************************************************************************/
 
-// Libraries
+// Internal headers
 #include "Table.hpp"
+#include "Fork.hpp"
+#include "Philosopher.hpp"
 
-
+Table::Table(const std::vector<unsigned int> weights) {
+  for (unsigned int id = 0; id < weights.size(); id++) {
+    _forks.emplace_back(Fork::make(id));
+    _philosophers.emplace_back(Philosopher::make(
+      weights[id], id, Philosopher::hand_preference::right_handed));
+  }
+}

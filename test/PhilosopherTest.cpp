@@ -22,7 +22,7 @@
 #include "gmock/gmock.h"
 
 // Internal headers
-#include "Table.hpp"
+#include "Philosopher.hpp"
 
 class APhilosopher : public testing::Test {
  protected:

@@ -25,7 +25,9 @@
 #include "gmock/gmock.h"
 
 // Internal headers
+#include "Fork.hpp"
 #include "Table.hpp"
+#include "Philosopher.hpp"
 
 struct ATable : public testing::Test {
   std::vector<unsigned int> weights {
