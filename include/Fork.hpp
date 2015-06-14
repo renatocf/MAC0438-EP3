@@ -18,9 +18,12 @@
 #define HPP_FORK_DEFINED
 
 // Standard headers
+#include <queue>
 #include <mutex>
 #include <memory>
+#include <thread>
 #include <iostream>
+#include <condition_variable>
 
 // Internal headers
 #include "Philosopher.hpp"
@@ -34,9 +37,52 @@ using ForkPtr = std::shared_ptr<Fork>;
 // Class
 class Fork {
  public:
+  // Static methods
   template<typename... Args>
   static ForkPtr make(Args... args) {
-    return TablePtr(new Fork(std::forward<Args>(args)...));
+    return ForkPtr(new Fork(std::forward<Args>(args)...));
+  }
+
+  // Synchronized methods
+  void take() {
+    std::unique_lock<std::mutex> lock(_mutex);
+    wait(lock, not_using);
+  }
+
+  void drop() {
+    std::unique_lock<std::mutex> lock(_mutex);
+    signal(not_using);
+  }
+
+  // Concrete methods
+  unsigned int id() const {
+    return _id;
+  }
+
+ private:
+  // Instance variables
+  unsigned int _id;
+
+  // Monitor variables
+  std::mutex _mutex;
+  std::queue<std::thread::id> _waiting;
+  std::condition_variable not_using;
+
+  // Constructors
+  Fork(unsigned int id) : _id(id) {
+  }
+
+  // Monitor methods
+  void wait(std::unique_lock<std::mutex> &lock,
+            std::condition_variable &cv) {
+
+    _waiting.push(std::this_thread::get_id());
+    cv.wait(lock, [this]() { return _waiting.front() == std::this_thread::get_id(); });
+    _waiting.pop();
+  }
+
+  void signal(std::condition_variable &cv) {
+    cv.notify_all();
   }
 };
 
