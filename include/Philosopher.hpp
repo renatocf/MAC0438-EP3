@@ -48,6 +48,14 @@ class Philosopher {
     return PhilosopherPtr(new Philosopher(std::forward<Args>(args)...));
   }
 
+  // Overloaded operators
+  void operator()(unsigned int num_iterations) {
+    for (unsigned int i = 0; i < num_iterations; i++) {
+      think();
+      eat();
+    }
+  }
+
   // Concrete methods
   void think() {
     std::mt19937_64 eng{std::random_device{}()};
