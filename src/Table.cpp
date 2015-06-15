@@ -24,6 +24,8 @@ Table::Table(const std::vector<PhilosopherPtr>& philosophers)
   for (unsigned int place = 0; place < _philosophers.size(); place++) {
     _forks[place] = Fork::make();
     _forks[place]->place(place);
+
     _philosophers[place]->place(place);
+    _philosophers[place]->table(this);
   }
 }

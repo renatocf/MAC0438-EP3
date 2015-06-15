@@ -33,7 +33,7 @@ using TablePtr = std::shared_ptr<Table>;
 using PhilosopherPtr = std::shared_ptr<Philosopher>;
 
 // Class
-class Table {
+class Table : public std::enable_shared_from_this<Table> {
  public:
   // Static methods
   template<typename... Args>

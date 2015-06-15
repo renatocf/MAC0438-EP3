@@ -57,21 +57,23 @@ class Philosopher {
   }
 
   // Concrete methods
-  void think() {
+  auto think() -> decltype(std::chrono::milliseconds()) {
     std::mt19937_64 eng{_seed};
     std::uniform_int_distribution<> dist(10, 100);
-    std::this_thread::sleep_for(std::chrono::milliseconds{dist(eng)});
+    auto time = std::chrono::milliseconds{dist(eng)};
+    std::this_thread::sleep_for(time);
+    return time;
   }
 
   void eat() {
     _behavior->eat();
   }
 
-  void table(TablePtr table) {
+  void table(Table *table) {
     _table = table;
   }
 
-  TablePtr table() {
+  Table *table() {
     return _table;
   }
 
@@ -126,21 +128,23 @@ class Philosopher {
   unsigned int _weight;
   unsigned int _place;
   unsigned int _seed;
+
   std::shared_ptr<Philosopher::Behavior> _behavior;
-  TablePtr _table;
+  Table *_table;
 
   // Constructors
   Philosopher(unsigned int weight,
-              Philosopher::hand_preference preference
-                = Philosopher::hand_preference::right_handed,
+              hand_preference preference = hand_preference::right_handed,
               unsigned int seed = std::random_device{}())
       : _weight(weight), _seed(seed) {
 
     switch (preference) {
       case hand_preference::right_handed:
         _behavior = std::make_shared<RightHanded>(this);
+        break;
       case hand_preference::left_handed:
         _behavior = std::make_shared<LeftHanded>(this);
+        break;
     }
   }
 };

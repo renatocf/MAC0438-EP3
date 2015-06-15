@@ -17,12 +17,17 @@
 // Standard headers
 #include <thread>
 #include <future>
+#include <iostream>
 
 // External headers
 #include "gmock/gmock.h"
 
 // Internal headers
 #include "Philosopher.hpp"
+
+// Helpers
+using ::testing::NotNull;
+using ::testing::Pointee;
 
 class APhilosopher : public testing::Test {
  protected:
@@ -32,7 +37,9 @@ class APhilosopher : public testing::Test {
 
 class ADinningPhilosopher : public testing::Test {
  protected:
-  PhilosopherPtr philosopher = Philosopher::make(80);
+
+  PhilosopherPtr philosopher = Philosopher::make(
+    80, Philosopher::hand_preference::right_handed, 42);
 
   TablePtr table = Table::make(std::vector<PhilosopherPtr>{
     philosopher
@@ -44,10 +51,30 @@ TEST_F(APhilosopher, hasCorrectWeight) {
 }
 
 TEST_F(APhilosopher, canHaveTableAssigned) {
-  philosopher->table(empty_table);
-  ASSERT_EQ(empty_table, philosopher->table());
+  philosopher->table(empty_table.get());
+  ASSERT_EQ(empty_table.get(), philosopher->table());
 }
 
 TEST_F(ADinningPhilosopher, isInTheCorrectPlace) {
   ASSERT_EQ(0, philosopher->place());
+}
+
+TEST_F(ADinningPhilosopher, hasTableAssigned) {
+  ASSERT_THAT(philosopher->table(), NotNull());
+}
+
+TEST_F(ADinningPhilosopher, canEat) {
+  for (auto philosopher : table->philosophers()) {
+    philosopher->eat();
+  }
+}
+
+TEST_F(ADinningPhilosopher, canThink) {
+  for (auto philosopher : table->philosophers()) {
+    std::mt19937_64 eng{42};
+    std::uniform_int_distribution<> dist(10, 100);
+    auto time = std::chrono::milliseconds{dist(eng)};
+
+    ASSERT_EQ(time, philosopher->think());
+  }
 }
