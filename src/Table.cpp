@@ -21,11 +21,11 @@
 
 Table::Table(const std::vector<PhilosopherPtr>& philosophers)
     : _philosophers(philosophers), _forks(philosophers.size()) {
-  for (unsigned int place = 0; place < _philosophers.size(); place++) {
-    _forks[place] = Fork::make();
-    _forks[place]->place(place);
+  for (unsigned int position = 0; position < _philosophers.size(); position++) {
+    _forks[position] = Fork::make();
+    _forks[position]->position(position);
 
-    _philosophers[place]->place(place);
-    _philosophers[place]->table(this);
+    _philosophers[position]->position(position);
+    _philosophers[position]->table(this);
   }
 }

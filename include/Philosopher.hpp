@@ -69,7 +69,7 @@ class Philosopher {
 
   void eat() {
     _behavior->eat();
-    std::cerr << "Philosopher " << _place << " eating!" << std::endl;
+    std::cerr << "Philosopher " << _position << " eating!" << std::endl;
   }
 
   void table(Table *table) {
@@ -84,12 +84,12 @@ class Philosopher {
     return _weight;
   }
 
-  void place(unsigned int place) {
-    _place = place;
+  void position(unsigned int position) {
+    _position = position;
   }
 
-  unsigned int place() {
-    return _place;
+  unsigned int position() {
+    return _position;
   }
 
  private:
@@ -108,8 +108,8 @@ class Philosopher {
     RightHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override {
-      philosopher->table()->right_fork(philosopher->place());
-      philosopher->table()->left_fork(philosopher->place());
+      philosopher->table()->right_fork(philosopher->position());
+      philosopher->table()->left_fork(philosopher->position());
     }
     ~RightHanded() override {}
   };
@@ -121,15 +121,15 @@ class Philosopher {
     LeftHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override {
-      philosopher->table()->left_fork(philosopher->place());
-      philosopher->table()->right_fork(philosopher->place());
+      philosopher->table()->left_fork(philosopher->position());
+      philosopher->table()->right_fork(philosopher->position());
     }
     ~LeftHanded() override {}
   };
 
   // Instance variables
   unsigned int _weight;
-  unsigned int _place;
+  unsigned int _position;
   unsigned int _seed;
 
   std::shared_ptr<Philosopher::Behavior> _behavior;

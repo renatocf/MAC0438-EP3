@@ -55,17 +55,17 @@ class Fork {
   }
 
   // Concrete methods
-  unsigned int place() const {
-    return _place;
+  unsigned int position() const {
+    return _position;
   }
 
-  void place(unsigned int place) {
-    _place = place;
+  void position(unsigned int position) {
+    _position = position;
   }
 
  private:
   // Instance variables
-  unsigned int _place;
+  unsigned int _position;
 
   // Monitor variables
   std::mutex _mutex;

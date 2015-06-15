@@ -33,14 +33,14 @@ struct AFork : public testing::Test {
   PhilosopherPtr philosopher2 = Philosopher::make(80);
 
   AFork() {
-    fork->place(0);
-    philosopher1->place(1);
-    philosopher2->place(2);
+    fork->position(0);
+    philosopher1->position(1);
+    philosopher2->position(2);
   }
 };
 
 TEST_F(AFork, isInTheCorrectPlace) {
-  ASSERT_EQ(0, fork->place());
+  ASSERT_EQ(0, fork->position());
 }
 
 TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {
@@ -48,12 +48,12 @@ TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {
   std::vector<unsigned int> result { 0, 1, 2, 3, 4 };
 
   std::vector<std::thread> threads;
-  for (unsigned int place = 0; place < 5; place++) {
-    threads.emplace_back([this, place, &arrive]() {
+  for (unsigned int position = 0; position < 5; position++) {
+    threads.emplace_back([this, position, &arrive]() {
       fork->take();
       // Sleep to avoid races just after finishing
-      std::this_thread::sleep_for(std::chrono::milliseconds(place * 2));
-      arrive.push_back(place);
+      std::this_thread::sleep_for(std::chrono::milliseconds(position * 2));
+      arrive.push_back(position);
       fork->drop();
     });
   }

@@ -56,7 +56,7 @@ TEST_F(APhilosopher, canHaveTableAssigned) {
 }
 
 TEST_F(ADinningPhilosopher, isInTheCorrectPlace) {
-  ASSERT_EQ(0, philosopher->place());
+  ASSERT_EQ(0, philosopher->position());
 }
 
 TEST_F(ADinningPhilosopher, hasTableAssigned) {

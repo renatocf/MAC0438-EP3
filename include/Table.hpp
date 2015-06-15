@@ -46,24 +46,24 @@ class Table : public std::enable_shared_from_this<Table> {
     return _forks.size();
   }
 
-  ForkPtr fork(unsigned int fork_place) {
-    return _forks.at(fork_place);
+  ForkPtr fork(unsigned int fork_position) {
+    return _forks.at(fork_position);
   }
 
-  ForkPtr left_fork(unsigned int philosopher_place) {
-    return _forks.at(philosopher_place);
+  ForkPtr left_fork(unsigned int philosopher_position) {
+    return _forks.at(philosopher_position);
   }
 
-  ForkPtr right_fork(unsigned int philosopher_place) {
-    return _forks.at((philosopher_place + 1) % number_forks());
+  ForkPtr right_fork(unsigned int philosopher_position) {
+    return _forks.at((philosopher_position + 1) % number_forks());
   }
 
   unsigned int number_philosophers() const {
     return _philosophers.size();
   }
 
-  PhilosopherPtr philosopher(unsigned int philosopher_place) {
-    return _philosophers.at(philosopher_place);
+  PhilosopherPtr philosopher(unsigned int philosopher_position) {
+    return _philosophers.at(philosopher_position);
   }
 
   const std::vector<PhilosopherPtr> &philosophers() const {
