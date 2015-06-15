@@ -18,10 +18,12 @@
 #define HPP_PHILOSOPHER_DEFINED
 
 // Standard headers
+#include <atomic>
 #include <chrono>
 #include <memory>
 #include <random>
 #include <thread>
+#include <iostream>
 
 // Internal headers
 #include "Table.hpp"
@@ -49,8 +51,8 @@ class Philosopher {
   }
 
   // Overloaded operators
-  void operator()(unsigned int num_iterations) {
-    for (unsigned int i = 0; i < num_iterations; i++) {
+  void operator()(std::atomic_int &atomic_number_meals) {
+    while (atomic_number_meals --> 0) {
       think();
       eat();
     }
@@ -67,6 +69,7 @@ class Philosopher {
 
   void eat() {
     _behavior->eat();
+    std::cerr << "Philosopher " << _place << " eating!" << std::endl;
   }
 
   void table(Table *table) {
