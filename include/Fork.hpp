@@ -72,10 +72,6 @@ class Fork {
   std::queue<std::thread::id> _waiting;
   std::condition_variable not_using;
 
-  // Constructors
-  Fork(unsigned int place) : _place(place) {
-  }
-
   // Monitor methods
   void wait(std::unique_lock<std::mutex> &lock,
             std::condition_variable &cv) {

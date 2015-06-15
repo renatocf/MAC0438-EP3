@@ -27,23 +27,27 @@
 class APhilosopher : public testing::Test {
  protected:
   TablePtr empty_table = Table::make();
-  PhilosopherPtr philosopher = Philosopher::make(80, 0);
+  PhilosopherPtr philosopher = Philosopher::make(80);
 };
 
 class ADinningPhilosopher : public testing::Test {
  protected:
-  TablePtr table = Table::make(std::vector<unsigned int>{80});
+  PhilosopherPtr philosopher = Philosopher::make(80);
+
+  TablePtr table = Table::make(std::vector<PhilosopherPtr>{
+    philosopher
+  });
 };
 
 TEST_F(APhilosopher, hasCorrectWeight) {
-  ASSERT_EQ(philosopher->weight(), 80);
-}
-
-TEST_F(APhilosopher, hasCorrectId) {
-  ASSERT_EQ(philosopher->place(), 0);
+  ASSERT_EQ(80, philosopher->weight());
 }
 
 TEST_F(APhilosopher, canHaveTableAssigned) {
   philosopher->table(empty_table);
-  ASSERT_EQ(philosopher->table(), empty_table);
+  ASSERT_EQ(empty_table, philosopher->table());
+}
+
+TEST_F(ADinningPhilosopher, isInTheCorrectPlace) {
+  ASSERT_EQ(0, philosopher->place());
 }

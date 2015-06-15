@@ -76,9 +76,7 @@ class Table {
   std::vector<ForkPtr> _forks;
 
   // Constructors
-  Table() = default;
-
-  Table(const std::vector<unsigned int> weights);
+  Table(const std::vector<PhilosopherPtr>& philosophers = {});
 };
 
 #endif

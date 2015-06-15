@@ -28,13 +28,19 @@
 using ::testing::ContainerEq;
 
 struct AFork : public testing::Test {
-  ForkPtr fork = Fork::make(0);
-  PhilosopherPtr philosopher1 = Philosopher::make(80, 1);
-  PhilosopherPtr philosopher2 = Philosopher::make(80, 2);
+  ForkPtr fork = Fork::make();
+  PhilosopherPtr philosopher1 = Philosopher::make(80);
+  PhilosopherPtr philosopher2 = Philosopher::make(80);
+
+  AFork() {
+    fork->place(0);
+    philosopher1->place(1);
+    philosopher2->place(2);
+  }
 };
 
-TEST_F(AFork, hasCorrectId) {
-  ASSERT_EQ(fork->place(), 0);
+TEST_F(AFork, isInTheCorrectPlace) {
+  ASSERT_EQ(0, fork->place());
 }
 
 TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {

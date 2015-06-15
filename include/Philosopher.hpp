@@ -130,11 +130,11 @@ class Philosopher {
   TablePtr _table;
 
   // Constructors
-  Philosopher(unsigned int weight, unsigned int place,
+  Philosopher(unsigned int weight,
               Philosopher::hand_preference preference
                 = Philosopher::hand_preference::right_handed,
               unsigned int seed = std::random_device{}())
-      : _weight(weight), _place(place), _seed(seed) {
+      : _weight(weight), _seed(seed) {
 
     switch (preference) {
       case hand_preference::right_handed:

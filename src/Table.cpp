@@ -19,10 +19,11 @@
 #include "Fork.hpp"
 #include "Philosopher.hpp"
 
-Table::Table(const std::vector<unsigned int> weights) {
-  for (unsigned int id = 0; id < weights.size(); id++) {
-    _forks.emplace_back(Fork::make(id));
-    _philosophers.emplace_back(Philosopher::make(
-      weights[id], id, Philosopher::hand_preference::right_handed));
+Table::Table(const std::vector<PhilosopherPtr>& philosophers)
+    : _philosophers(philosophers), _forks(philosophers.size()) {
+  for (unsigned int place = 0; place < _philosophers.size(); place++) {
+    _forks[place] = Fork::make();
+    _forks[place]->place(place);
+    _philosophers[place]->place(place);
   }
 }
