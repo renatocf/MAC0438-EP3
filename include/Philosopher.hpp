@@ -61,7 +61,7 @@ class Philosopher {
   // Concrete methods
   auto think() -> decltype(std::chrono::milliseconds()) {
     std::mt19937_64 eng{_seed};
-    std::uniform_int_distribution<> dist(10, 100);
+    std::uniform_int_distribution<> dist(100, 1000);
     auto time = std::chrono::milliseconds{dist(eng)};
     std::this_thread::sleep_for(time);
     return time;
