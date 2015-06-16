@@ -51,10 +51,10 @@ class Philosopher {
   }
 
   // Overloaded operators
-  void operator()(std::atomic_int &atomic_number_meals) {
-    while (atomic_number_meals --> 0) {
+  void operator()(std::atomic_int &number_meals) {
+    while (number_meals > 0) {
       think();
-      eat();
+      eat(number_meals);
     }
   }
 
@@ -67,9 +67,11 @@ class Philosopher {
     return time;
   }
 
-  void eat() {
+  void eat(std::atomic_int &number_meals) {
     _behavior->eat();
-    std::cerr << "Philosopher " << _position << " eating!" << std::endl;
+    auto old_number_meals = number_meals--;
+    if (old_number_meals > 0)
+      std::cerr << "Philosopher " << _position << " eating!" << std::endl;
   }
 
   void table(Table *table) {
