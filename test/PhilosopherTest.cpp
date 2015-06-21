@@ -63,16 +63,31 @@ TEST_F(ADinningPhilosopher, hasTableAssigned) {
   ASSERT_THAT(philosopher->table(), NotNull());
 }
 
-TEST_F(ADinningPhilosopher, canEat) {
+TEST_F(ADinningPhilosopher, canEatWithNoMeals) {
+  std::atomic_int number_meals(0);
   for (auto philosopher : table->philosophers()) {
-    philosopher->eat();
+    philosopher->eat(number_meals);
+  }
+}
+
+TEST_F(ADinningPhilosopher, canEatWithOneMealPerPhilosopher) {
+  std::atomic_int number_meals(table->number_philosophers());
+  for (auto philosopher : table->philosophers()) {
+    philosopher->eat(number_meals);
+  }
+}
+
+TEST_F(ADinningPhilosopher, canEatWithTwoMealsPerPhilosopher) {
+  std::atomic_int number_meals(2 * table->number_philosophers());
+  for (auto philosopher : table->philosophers()) {
+    philosopher->eat(number_meals);
   }
 }
 
 TEST_F(ADinningPhilosopher, canThink) {
   for (auto philosopher : table->philosophers()) {
     std::mt19937_64 eng{42};
-    std::uniform_int_distribution<> dist(10, 100);
+    std::uniform_int_distribution<> dist(100, 1000);
     auto time = std::chrono::milliseconds{dist(eng)};
 
     ASSERT_EQ(time, philosopher->think());
