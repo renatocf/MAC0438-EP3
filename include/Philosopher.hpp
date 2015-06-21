@@ -26,7 +26,9 @@
 #include <iostream>
 
 // Internal headers
+#include "Fork.hpp"
 #include "Table.hpp"
+
 
 // Cyclic dependency
 class Table;
@@ -61,7 +63,7 @@ class Philosopher {
   // Concrete methods
   auto think() -> decltype(std::chrono::milliseconds()) {
     std::mt19937_64 eng{_seed};
-    std::uniform_int_distribution<> dist(10, 100);
+    std::uniform_int_distribution<> dist(10, 20);
     auto time = std::chrono::milliseconds{dist(eng)};
     std::this_thread::sleep_for(time);
     return time;
@@ -107,10 +109,7 @@ class Philosopher {
    public:
     RightHanded(Philosopher *p) : philosopher(p) {
     }
-    void eat() override {
-      philosopher->table()->right_fork(philosopher->position());
-      philosopher->table()->left_fork(philosopher->position());
-    }
+    void eat() override;
     ~RightHanded() override {}
   };
 
@@ -120,10 +119,7 @@ class Philosopher {
    public:
     LeftHanded(Philosopher *p) : philosopher(p) {
     }
-    void eat() override {
-      philosopher->table()->left_fork(philosopher->position());
-      philosopher->table()->right_fork(philosopher->position());
-    }
+    void eat() override;
     ~LeftHanded() override {}
   };
 
