@@ -87,7 +87,7 @@ TEST_F(ADinningPhilosopher, canEatWithTwoMealsPerPhilosopher) {
 TEST_F(ADinningPhilosopher, canThink) {
   for (auto philosopher : table->philosophers()) {
     std::mt19937_64 eng{42};
-    std::uniform_int_distribution<> dist(100, 1000);
+    std::uniform_int_distribution<> dist(10, 20);
     auto time = std::chrono::milliseconds{dist(eng)};
 
     ASSERT_EQ(time, philosopher->think());
