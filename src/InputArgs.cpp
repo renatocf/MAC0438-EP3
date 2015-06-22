@@ -1,8 +1,10 @@
 // Standard headers
-#include "InputArgs.hpp"
-
 #include <cmath>
 #include <fstream>
+
+// Internal headers
+#include "InputArgs.hpp"
+
 
 
 InputArgs::InputArgs(int argc, char const *const *argv, 
@@ -22,6 +24,9 @@ void InputArgs::process_input(std::vector<PhilosopherPtr>& philosophers) {
   }
 
   input_file >> number_philosophers;
+  if (number_philosophers < 3) {
+    std::cerr << "Not enough philosophers for a real dinner!" << std::endl;
+  }
 
   std::vector<double> philosophers_weight;
 

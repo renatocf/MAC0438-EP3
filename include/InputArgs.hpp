@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 
+// Internal headers
 #include "Philosopher.hpp"
 
 struct InputArgs {
