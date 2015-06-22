@@ -42,6 +42,7 @@ class Dinner {
   void serve(int number_meals) {
     std::atomic_int atomic_number_meals{number_meals};
 
+    _table->start_dinner();
     std::vector<std::thread> eating;
     for (auto& philosopher : _table->philosophers())
       eating.emplace_back(*philosopher, std::ref(atomic_number_meals));
@@ -51,7 +52,7 @@ class Dinner {
 
     std::cerr << "==========================================" << std::endl;
     for (unsigned int position = 0; position < _table->number_philosophers(); position++) {
-      std::cerr << "Philosopher " << position 
+      std::cerr << "Philosopher " << position + 1
                 << " has eaten "  << _table->meals_eaten_by(position) 
                 << " meals!"      << std::endl;
     }

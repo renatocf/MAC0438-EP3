@@ -62,6 +62,7 @@ class Philosopher {
 
   // Concrete methods
   auto think() -> decltype(std::chrono::milliseconds()) {
+    // Sleep (thinking time)
     std::mt19937_64 eng{_seed};
     std::uniform_int_distribution<> dist(10, 20);
     auto time = std::chrono::milliseconds{dist(eng)};
@@ -70,15 +71,21 @@ class Philosopher {
   }
 
   void eat(std::atomic_int &number_meals) {
-    _behavior->eat();
+    _behavior->take_forks();
     if (_hunger > 0) {
       auto old_number_meals = number_meals--;
       if (old_number_meals > 0) {
-        std::cerr << "Philosopher " << _position << " eating!" << std::endl;
+        clock_t time_from_start = clock() - _table->init_time();
+        std::cerr << "Philosopher " << _position + 1 << " started eating!  Time: " 
+                  << (time_from_start)/((float)CLOCKS_PER_SEC) << " s"<< std::endl;
+        // Sleep (eating time)
         auto time = std::chrono::milliseconds{10};
         std::this_thread::sleep_for(time);
         _hunger--;
         _table->philosopher_has_eaten(_position);
+        time_from_start = clock() - _table->init_time();
+        std::cerr << "Philosopher " << _position + 1 << " finished eating! Time: " 
+                  << (time_from_start)/((float)CLOCKS_PER_SEC)  << " s"<< std::endl;
       }
     }
     _behavior->drop_forks();
@@ -108,7 +115,7 @@ class Philosopher {
   // Inner classes
   class Behavior {
    public:
-    virtual void eat() = 0;
+    virtual void take_forks() = 0;
     virtual void drop_forks() = 0;
     virtual ~Behavior() {}
   };
@@ -120,7 +127,7 @@ class Philosopher {
    public:
     RightHanded(Philosopher *p) : philosopher(p) {
     }
-    void eat() override;
+    void take_forks() override;
     void drop_forks() override;
     ~RightHanded() override {}
   };
@@ -131,7 +138,7 @@ class Philosopher {
    public:
     LeftHanded(Philosopher *p) : philosopher(p) {
     }
-    void eat() override;
+    void take_forks() override;
     void drop_forks() override;
     ~LeftHanded() override {}
   };

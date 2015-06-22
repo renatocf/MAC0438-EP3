@@ -17,7 +17,7 @@
 // Libraries
 #include "Philosopher.hpp"
 
-void Philosopher::RightHanded::eat() {
+void Philosopher::RightHanded::take_forks() {
 	philosopher->table()->right_fork(philosopher->position())->take();
 	philosopher->table()->left_fork(philosopher->position())->take();
 }
@@ -27,7 +27,7 @@ void Philosopher::RightHanded::drop_forks() {
 	philosopher->table()->left_fork(philosopher->position())->drop();
 }
 
-void Philosopher::LeftHanded::eat() {
+void Philosopher::LeftHanded::take_forks() {
   philosopher->table()->left_fork(philosopher->position())->take();
   philosopher->table()->right_fork(philosopher->position())->take();
 }
