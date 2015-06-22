@@ -4,7 +4,6 @@
 // Standard headers
 #include <string>
 #include <vector>
-#include <fstream>
 #include <sstream>
 
 #include "Philosopher.hpp"
@@ -14,19 +13,18 @@ struct InputArgs {
   std::string  				      file_path;
   unsigned int 				      number_meals;
   char         				      operation_mode;
-  unsigned int 				      total_weight;
+  double       				      total_weight;
 
   InputArgs(int argc, char const *const *argv, std::vector<PhilosopherPtr>& philosophers);
-
-  void make_philosophers(std::vector<PhilosopherPtr>& hungry_philosophers, 
-                         std::vector<unsigned int> weights,
-                         unsigned int number_philosophers);
 
  private:
   std::vector<std::stringstream> argstream;
 
   void process_input(std::vector<PhilosopherPtr>& philosophers);
   void read_input();
+  void make_philosophers(std::vector<PhilosopherPtr>& hungry_philosophers, 
+                         std::vector<double> weights,
+                         unsigned int number_philosophers);
 };
 
 #endif
