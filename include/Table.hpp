@@ -18,9 +18,11 @@
 #define HPP_TABLE_DEFINED
 
 // Standard headers
+#include <ctime>
 #include <memory>
 #include <thread>
 #include <vector>
+
 
 // Forward declaration
 class Fork;
@@ -74,6 +76,14 @@ class Table : public std::enable_shared_from_this<Table> {
     return _eaten_meals[position];
   }
 
+  void start_dinner() {
+    dinner_init_time = clock();
+  }
+
+  clock_t init_time() {
+    return dinner_init_time;
+  }
+
   const std::vector<PhilosopherPtr> &philosophers() const {
     return _philosophers;
   }
@@ -83,6 +93,7 @@ class Table : public std::enable_shared_from_this<Table> {
   std::vector<PhilosopherPtr> _philosophers;
   std::vector<ForkPtr> _forks;
   std::vector<unsigned int> _eaten_meals;
+  clock_t dinner_init_time;
 
   // Constructors
   Table(const std::vector<PhilosopherPtr>& philosophers = {});
