@@ -27,5 +27,7 @@ Table::Table(const std::vector<PhilosopherPtr>& philosophers)
 
     _philosophers[position]->position(position);
     _philosophers[position]->table(this);
+
+    _eaten_meals.push_back(0);
   }
 }

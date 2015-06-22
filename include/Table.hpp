@@ -66,6 +66,14 @@ class Table : public std::enable_shared_from_this<Table> {
     return _philosophers.at(philosopher_position);
   }
 
+  void philosopher_has_eaten(unsigned int position) {
+    _eaten_meals[position]++;
+  }
+
+  unsigned int meals_eaten_by(unsigned int position) {
+    return _eaten_meals[position];
+  }
+
   const std::vector<PhilosopherPtr> &philosophers() const {
     return _philosophers;
   }
@@ -74,6 +82,7 @@ class Table : public std::enable_shared_from_this<Table> {
   // Instance variables
   std::vector<PhilosopherPtr> _philosophers;
   std::vector<ForkPtr> _forks;
+  std::vector<unsigned int> _eaten_meals;
 
   // Constructors
   Table(const std::vector<PhilosopherPtr>& philosophers = {});
