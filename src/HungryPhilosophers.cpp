@@ -1,10 +1,8 @@
 // Standard headers
-
 #include <cstdlib>
 #include <iostream>
 
 // Internal headers
-
 #include "Dinner.hpp"
 #include "InputArgs.hpp"
 #include "Philosopher.hpp"
