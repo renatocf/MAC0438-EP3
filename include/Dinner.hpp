@@ -48,6 +48,13 @@ class Dinner {
 
     for (auto& eating_philosopher : eating)
       eating_philosopher.join();
+
+    std::cerr << "==========================================" << std::endl;
+    for (unsigned int position = 0; position < _table->number_philosophers(); position++) {
+      std::cerr << "Philosopher " << position 
+                << " has eaten "  << _table->meals_eaten_by(position) 
+                << " meals!"      << std::endl;
+    }
   }
 
  private:
