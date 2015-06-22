@@ -71,9 +71,16 @@ class Philosopher {
 
   void eat(std::atomic_int &number_meals) {
     _behavior->eat();
-    auto old_number_meals = number_meals--;
-    if (old_number_meals > 0)
-      std::cerr << "Philosopher " << _position << " eating!" << std::endl;
+    if (_hunger > 0) {
+      auto old_number_meals = number_meals--;
+      if (old_number_meals > 0) {
+        std::cerr << "Philosopher " << _position << " eating!" << std::endl;
+        auto time = std::chrono::milliseconds{10};
+        std::this_thread::sleep_for(time);
+        _hunger--;
+      }
+    }
+    _behavior->drop_forks();
   }
 
   void table(Table *table) {
@@ -84,8 +91,8 @@ class Philosopher {
     return _table;
   }
 
-  unsigned int weight() {
-    return _weight;
+  unsigned int hunger() {
+    return _hunger;
   }
 
   void position(unsigned int position) {
@@ -101,6 +108,7 @@ class Philosopher {
   class Behavior {
    public:
     virtual void eat() = 0;
+    virtual void drop_forks() = 0;
     virtual ~Behavior() {}
   };
   using BehaviorPtr = std::shared_ptr<Behavior>;
@@ -112,6 +120,7 @@ class Philosopher {
     RightHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override;
+    void drop_forks() override;
     ~RightHanded() override {}
   };
 
@@ -122,11 +131,12 @@ class Philosopher {
     LeftHanded(Philosopher *p) : philosopher(p) {
     }
     void eat() override;
+    void drop_forks() override;
     ~LeftHanded() override {}
   };
 
   // Instance variables
-  unsigned int _weight;
+  unsigned int _hunger;
   unsigned int _position;
   unsigned int _seed;
 
@@ -134,10 +144,10 @@ class Philosopher {
   Table *_table;
 
   // Constructors
-  Philosopher(unsigned int weight,
+  Philosopher(unsigned int hunger,
               hand_preference preference = hand_preference::right_handed,
               unsigned int seed = std::random_device{}())
-      : _weight(weight), _seed(seed) {
+      : _hunger(hunger), _seed(seed) {
 
     switch (preference) {
       case hand_preference::right_handed:

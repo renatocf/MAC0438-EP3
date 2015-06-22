@@ -22,7 +22,17 @@ void Philosopher::RightHanded::eat() {
 	philosopher->table()->left_fork(philosopher->position())->take();
 }
 
+void Philosopher::RightHanded::drop_forks() {
+	philosopher->table()->right_fork(philosopher->position())->drop();
+	philosopher->table()->left_fork(philosopher->position())->drop();
+}
+
 void Philosopher::LeftHanded::eat() {
   philosopher->table()->left_fork(philosopher->position())->take();
   philosopher->table()->right_fork(philosopher->position())->take();
+}
+
+void Philosopher::LeftHanded::drop_forks() {
+  philosopher->table()->left_fork(philosopher->position())->drop();
+  philosopher->table()->right_fork(philosopher->position())->drop();
 }
