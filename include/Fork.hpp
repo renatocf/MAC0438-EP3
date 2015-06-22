@@ -71,17 +71,19 @@ class Fork {
   std::mutex _mutex;
   std::queue<std::thread::id> _waiting;
   std::condition_variable not_using;
+  bool available = true;
 
   // Monitor methods
   void wait(std::unique_lock<std::mutex> &lock,
             std::condition_variable &cv) {
-
     _waiting.push(std::this_thread::get_id());
-    cv.wait(lock, [this]() { return _waiting.front() == std::this_thread::get_id(); });
+    cv.wait(lock, [this]() { return std::this_thread::get_id() == _waiting.front() && available; });
+    available = false;
     _waiting.pop();
   }
 
   void signal(std::condition_variable &cv) {
+    available = true;
     cv.notify_all();
   }
 };
