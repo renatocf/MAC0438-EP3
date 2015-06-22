@@ -1,5 +1,8 @@
 # MAC0438-EP3
-Third exercise of the disicpline MAC0458 (Programação Concorrente) 
+Third exercise of the disicpline MAC0438 (Programação Concorrente) 
+
+Lucas Dário		 -	Nº Usp : 7990940
+Renato Cordeiro Ferreira -	Nº Usp : 7990933
 
 MAC0438-EP3
 ============
