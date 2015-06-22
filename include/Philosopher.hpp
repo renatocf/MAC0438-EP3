@@ -78,6 +78,7 @@ class Philosopher {
         auto time = std::chrono::milliseconds{10};
         std::this_thread::sleep_for(time);
         _hunger--;
+        _table->philosopher_has_eaten(_position);
       }
     }
     _behavior->drop_forks();
