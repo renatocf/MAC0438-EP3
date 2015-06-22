@@ -50,9 +50,9 @@ TEST_F(AFork, canBeGottenByPhilosophersInTheRightOrder) {
   std::vector<std::thread> threads;
   for (unsigned int position = 0; position < 5; position++) {
     threads.emplace_back([this, position, &arrive]() {
+      // Sleep to avoid races
+      std::this_thread::sleep_for(std::chrono::milliseconds(25*position));
       fork->take();
-      // Sleep to avoid races just after finishing
-      std::this_thread::sleep_for(std::chrono::milliseconds(position * 2));
       arrive.push_back(position);
       fork->drop();
     });

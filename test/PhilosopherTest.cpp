@@ -46,8 +46,25 @@ class ADinningPhilosopher : public testing::Test {
   });
 };
 
-TEST_F(APhilosopher, hasCorrectWeight) {
-  ASSERT_EQ(80, philosopher->weight());
+class DinningPhilosophers : public testing::Test {
+ protected:
+
+  PhilosopherPtr philosopher1 = Philosopher::make(
+    80, Philosopher::hand_preference::right_handed, 42);
+  PhilosopherPtr philosopher2 = Philosopher::make(
+    40, Philosopher::hand_preference::right_handed, 1729);
+  PhilosopherPtr philosopher3 = Philosopher::make(
+    60, Philosopher::hand_preference::right_handed, 31415);
+  
+
+
+  TablePtr table = Table::make(std::vector<PhilosopherPtr>{
+    philosopher1, philosopher2, philosopher3
+  });
+};
+
+TEST_F(APhilosopher, hasCorrectHunger) {
+  ASSERT_EQ(80, philosopher->hunger());
 }
 
 TEST_F(APhilosopher, canHaveTableAssigned) {
@@ -63,21 +80,21 @@ TEST_F(ADinningPhilosopher, hasTableAssigned) {
   ASSERT_THAT(philosopher->table(), NotNull());
 }
 
-TEST_F(ADinningPhilosopher, canEatWithNoMeals) {
+TEST_F(DinningPhilosophers, canEatWithNoMeals) {
   std::atomic_int number_meals(0);
   for (auto philosopher : table->philosophers()) {
     philosopher->eat(number_meals);
   }
 }
 
-TEST_F(ADinningPhilosopher, canEatWithOneMealPerPhilosopher) {
+TEST_F(DinningPhilosophers, canEatWithOneMealPerPhilosopher) {
   std::atomic_int number_meals(table->number_philosophers());
   for (auto philosopher : table->philosophers()) {
     philosopher->eat(number_meals);
   }
 }
 
-TEST_F(ADinningPhilosopher, canEatWithTwoMealsPerPhilosopher) {
+TEST_F(DinningPhilosophers, canEatWithTwoMealsPerPhilosopher) {
   std::atomic_int number_meals(2 * table->number_philosophers());
   for (auto philosopher : table->philosophers()) {
     philosopher->eat(number_meals);

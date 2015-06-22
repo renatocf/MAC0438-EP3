@@ -49,8 +49,8 @@ TEST_F(ATable, hasRightNumberOfPhilosophers) {
 TEST_F(ATable, hasInitializedAllPhilosophers) {
   for (unsigned int position = 0; position < philosophers.size(); position++) {
     ASSERT_EQ(position, table->philosopher(position)->position());
-    ASSERT_EQ(philosophers[position]->weight(),
-              table->philosopher(position)->weight());
+    ASSERT_EQ(philosophers[position]->hunger(),
+              table->philosopher(position)->hunger());
   }
 }
 
